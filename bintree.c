@@ -63,9 +63,19 @@ void printBinTree( bintree *tree)
   printBinTreeOff( 0, tree);
 }
 
+//prioritising tree2 - if a kew appears in both trees, it will keep the one in the second tree
 bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 {
-  
+  bintree *bt =(bintree*) malloc(sizeof(bintree));
+  bt = tree1;
+  if(tree2 == NULL)
+    return bt;
+  else
+  {
+    insertKey(tree2->key, tree2->value, bt);
+    bt = mergeBinTrees(bt, tree2->left);
+    bt = mergeBinTrees(bt, tree2->right);
+  }
 }
 
 bintree *insertKey( int key, int value, bintree *tree)
