@@ -16,7 +16,7 @@ bintree *mkNode( int key, int value, bintree *left, bintree *right)
   bt.value = value;
   bt.left = left;
   bt.right = right;
-  return bt
+  return bt;
 }
 
 void freeNode( bintree * tree)
