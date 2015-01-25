@@ -21,7 +21,7 @@ bintree *mkNode( int key, int value, bintree *left, bintree *right)
 
 void freeNode( bintree * tree)
 {
-  /* fill in here */
+  
 }
 
 void freeBinTree( bintree *tree)
@@ -70,7 +70,6 @@ bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 
 bintree *insertKey( int key, int value, bintree *tree)
 {
-  /* fill in here */
 }
 
 bintree *deleteKey( int key, bintree *tree)
@@ -80,6 +79,19 @@ bintree *deleteKey( int key, bintree *tree)
 
 int findKey( int key, bintree *tree)
 {
-  /* fill in here */
+  if (tree->key == key)
+  {
+    printf("The value for the key is  %d \n", tree->value);
+  }
+  else 
+  {
+    if(key > tree->key)
+    {
+      findKey(key, tree->right);
+    }else
+    {
+      findKey(key, tree->left);
+    }
+  }
 }
 

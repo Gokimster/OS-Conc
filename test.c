@@ -12,5 +12,6 @@ void main()
   tree = mkNode(6,6, tree1, tree2);
 
   printBinTree(tree);
+  findKey(7, tree);
   
   }
