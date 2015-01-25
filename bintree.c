@@ -11,11 +11,11 @@ struct BINTREE {
 
 bintree *mkNode( int key, int value, bintree *left, bintree *right)
 {
-  BINTREE bt;
-  bt.key = key;
-  bt.value = value;
-  bt.left = left;
-  bt.right = right;
+  bintree *bt;
+  bt->key = key;
+  bt->value = value;
+  bt->left = left;
+  bt->right = right;
   return bt;
 }
 
