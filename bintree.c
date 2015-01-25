@@ -11,7 +11,7 @@ struct BINTREE {
 
 bintree *mkNode( int key, int value, bintree *left, bintree *right)
 {
-  BINTREE bt;
+  struct bintree bt;
   bt.key = key;
   bt.value = value;
   bt.left = left;
