@@ -19,6 +19,7 @@ void main()
   printf("Inserting key four value four\n");
     insertKey(4,4, tree1);
   printBinTree(tree1);
- findKey(7, tree1);
+  findKey(4, tree1);
+  findKey(10, tree1);
   
   }

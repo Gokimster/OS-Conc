@@ -65,7 +65,7 @@ void printBinTree( bintree *tree)
 
 bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 {
-  /* fill in here */
+  
 }
 
 bintree *insertKey( int key, int value, bintree *tree)
@@ -109,6 +109,11 @@ bintree *deleteKey( int key, bintree *tree)
 
 int findKey( int key, bintree *tree)
 {
+  if(tree == NULL)
+  {
+    printf("Could not find the key. \n");
+    return 0;
+  }
   if (tree->key == key)
   {
     printf("The value for the key is  %d \n", tree->value);
