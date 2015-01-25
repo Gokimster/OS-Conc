@@ -11,9 +11,12 @@ struct BINTREE {
 
 bintree *mkNode( int key, int value, bintree *left, bintree *right)
 {
+  printf("CREATING tree\n");
   bintree *bt;
   bt->key = key;
+  printf("%d\n",bt->key);
   bt->value = value;
+  printf("%d\n",bt->value);
   bt->left = left;
   bt->right = right;
   return bt;

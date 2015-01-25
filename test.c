@@ -6,13 +6,8 @@ void main()
 {
   bintree *tree;
 
-  tree = mkNode( 5, 5,
-                 mkNode( 3, 3,
-                         mkNode( 1, 1,
-                                 NULL,
-                                 mkNode( 4, 4, NULL, NULL)),
-                         NULL),
-                 NULL);
+  tree = mkNode(6,6,mkNode(5,5,NULL,NULL),(mkNode(7,7,NULL,NULL)));
 
-  printBinTree(tree);
+ //printBinTree(tree);
+  
   }
