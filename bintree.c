@@ -114,7 +114,39 @@ bintree *insertKey( int key, int value, bintree *tree)
 
 bintree *deleteKey( int key, bintree *tree)
 {
-  /* fill in here */
+   bintree *bt =(bintree*) malloc(sizeof(bintree));
+   bt=tree;
+  int found = findKey(key, tree);
+  if(found==0)
+  {
+    printf("Could not find the key. \n");
+    return NULL;
+
+  }else if(bt->left!=NULL && bt->left->key == key){
+    
+    bt->left=mergeBinTrees(bt->left->left, bt->left->right);
+    return bt;
+ 
+  }else if(bt->right!=NULL && bt->right->key == key){
+     
+    bt->right=mergeBinTrees(bt->right->left, bt->right->right);
+     return bt;
+  }else if(bt->key==key){
+  bt = mergeBinTrees(bt->left, bt->right); 
+   return bt;
+  }
+  else 
+  {
+    if(key > bt->key && bt->right!=NULL)
+    {
+     deleteKey(key,bt->right);
+     return bt;
+    }else if(key < bt->key){
+    deleteKey(key,bt->left);
+     return bt;
+    }
+    
+  }
 }
 
 int findKey( int key, bintree *tree)

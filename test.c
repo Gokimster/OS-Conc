@@ -12,27 +12,21 @@ void main()
   //tree = mkNode(6,6, tree1, tree2);
 
 
-  printBinTree(tree1);
-  printf(",Inserting key six, value six\n");
-  insertKey(6,6, tree1);
-  printBinTree(tree1);
-  printf("Inserting key four value four\n");
-  insertKey(4,4, tree1);
-  printBinTree(tree1);
-  findKey(4, tree1);
-  findKey(10, tree1);
 
-  bintree *tree;
-  bintree *treeP;
-  bintree *tree2;
-  tree1 = mkNode(2,2,NULL,NULL);
-  tree2 = mkNode(9,9,NULL,NULL);
-  tree = mkNode(3,3, tree1, tree2);
-  tree1 = mkNode(4,4,NULL,NULL);
-  tree2 = mkNode(7,7,NULL,NULL);
-  treeP = mkNode(1,1, tree1, tree2);
-  tree1 = mergeBinTrees(tree, treeP);
-  printf("Merging Trees\n");
-  printBinTree(tree1);
+  
+  insertKey(6,6, tree1);
+
+  insertKey(4,4, tree1);
+
+   insertKey(7,7, tree1);
+    insertKey(3,3, tree1);
+     insertKey(1,1, tree1);
+     
+ printBinTree(tree1);
+printf("-------------------------------------------\n");
+printf("Removing key 3\n");
+printf("-------------------------------------------\n");
+//deleteKey(5, tree1);
+printBinTree(deleteKey(4,tree1));
   
   }
