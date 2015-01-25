@@ -1,0 +1,3 @@
+gcc -o bintree.o -c bintree.c
+gcc -o test.o -c test.c
+gcc -o program test.o bintree.o
