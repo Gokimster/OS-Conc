@@ -70,7 +70,37 @@ bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 
 bintree *insertKey( int key, int value, bintree *tree)
 {
+    if( tree->key > key && tree->left != NULL) {
+        tree = tree->left;
+        insertKey(key,value,tree);
+    }
+    else if(tree->key < key && tree->right != NULL) {
+        tree = tree->right;
+        insertKey(key,value, tree);
+    }
+    else if (tree->key == key){
+      tree->value = value;
+    }
+    else if(tree->left == NULL && key < tree->key) {
+        bintree *newNode = (bintree*)malloc(sizeof(bintree));
+        newNode->key =key;
+        newNode->value = value;
+        newNode->left = NULL;
+        newNode->right = NULL;
+        tree->left = newNode;
+        return;
+    }
+    else if(tree->right == NULL  && key > tree->key) {
+        bintree *newtree = (bintree*)malloc(sizeof(bintree));
+        newtree->key = key;
+        newtree->value = value;
+        newtree->left = NULL;
+        newtree->right = NULL;
+        tree->right = newtree;
+        return;
+    }
 }
+
 
 bintree *deleteKey( int key, bintree *tree)
 {
