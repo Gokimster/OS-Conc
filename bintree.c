@@ -93,29 +93,32 @@ bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 
 bintree *insertKey( int key, int value, bintree *tree)
 {
-    bintree *bt = tree;
-    if( tree->key > key && tree->left != NULL) {
-        bt = tree->left;
+    bintree *bt =(bintree*) malloc(sizeof(bintree));
+    bt=tree;
+    if( bt->key > key && bt->left != NULL) {
+        bt = bt->left;
         insertKey(key,value,bt);
         return bt;
     }
-    else if(tree->key < key && tree->right != NULL) {
-        bt = tree->right;
+    else if(bt->key < key && bt->right != NULL) {
+        bt = bt->right;
         insertKey(key,value, bt);
         return bt;
     }
-    else if (tree->key == key){
+    else if (bt->key == key){
       bt->value = value;
     }
-    else if(tree->left == NULL && key < tree->key) {
+    else if(bt->left == NULL && key < bt->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->left = newNode;
         return bt;
+        
     }
     else if(tree->right == NULL  && key > tree->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->right = newNode;
         return bt;
+        
     }
 }
 

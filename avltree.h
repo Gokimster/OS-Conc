@@ -2,9 +2,9 @@ typedef struct AVLTREE avltree;
 
 extern avltree *mkNode( int key, int value, avltree *left, avltree *right);
 
-extern void freeNode( avltree *tree);
+extern avltree *freeNode( avltree *tree);
 
-extern void freeAvlTree( avltree *tree);
+extern avltree *freeAvlTree( avltree *tree);
 
 extern void printAvlTree( avltree *tree);
 

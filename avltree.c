@@ -27,7 +27,7 @@ avltree *mkNode( int key, int value, avltree *left, avltree *right)
   avltree *avlt =(avltree*) malloc(sizeof(avltree));
   avlt->key = key;
   avlt->value = value;
-  avlt->height = height;
+  avlt->height = 1;
   avlt->left = left;
   avlt->right = right;
 
@@ -121,6 +121,7 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
  avltree *rotateLeft(avltree *avlt)
 {
     avltree *right = avlt->right;
+
     avltree *leftOfRight = right->left;
  
     // rotate
@@ -128,8 +129,8 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     avlt->right = leftOfRight;
  
     //  fix heights of thier new poistions
-    avlt->height = getBigger(avlt->left->height, avlt->right->height)+1;
-    right->height = getBigger(right->left->height, right->right->height)+1;
+    avlt->height = (getBigger(avlt->left->height, avlt->right->height))+1;
+    right->height = (getBigger(right->left->height, right->right->height))+1;
  
     //  new tree
     return right;
@@ -151,37 +152,84 @@ avltree *rotateRight(avltree *avlt){
     return left;
 }
 
-avltree *insertKey( int key, int value, avltree *tree)
+
+int getHeight(avltree *tree){
+  if(tree==NULL){
+    return 0;
+  }else return tree->height;
+}
+ 
+// Get Balance factor of node N
+int getBalance(avltree *avlt)
 {
-    if( tree->key > key && tree->left != NULL) {
-        tree = tree->left;
-        insertKey(key,value,tree);
+    if (avlt == NULL)
+        return 0;
+    return getHeight(avlt->left) - getHeight(avlt->right);
+}
+ 
+avltree *insertKey(int key,int value, avltree *tree)
+{
+    /* 1.  Perform the normal BST rotation */
+   avltree *avlt =(avltree*) malloc(sizeof(avltree));
+    avlt=tree;
+    if( avlt->key > key && avlt->left != NULL) {
+        avlt = avlt->left;
+        insertKey(key,value,avlt);
+        //return avlt;
     }
-    else if(tree->key < key && tree->right != NULL) {
-        tree = tree->right;
-        insertKey(key,value, tree);
+    else if(avlt->key < key && avlt->right != NULL) {
+        avlt = avlt->right;
+        insertKey(key,value, avlt);
+       // return avlt;
     }
-    else if (tree->key == key){
-      tree->value = value;
+    else if (avlt->key == key){
+      avlt->value = value;
     }
-    else if(tree->left == NULL && key < tree->key) {
-        avltree *newNode = (avltree*)malloc(sizeof(avltree));
-        newNode->key =key;
-        newNode->value = value;
-        newNode->left = NULL;
-        newNode->right = NULL;
-        tree->left = newNode;
-        return;
+    else if(avlt->left == NULL && key < avlt->key) {
+        avltree *newNode = mkNode(key, value, NULL, NULL);
+        avlt->left = newNode;
+        //return avlt;   
     }
     else if(tree->right == NULL  && key > tree->key) {
-        avltree *newtree = (avltree*)malloc(sizeof(avltree));
-        newtree->key = key;
-        newtree->value = value;
-        newtree->left = NULL;
-        newtree->right = NULL;
-        tree->right = newtree;
-        return;
+        avltree *newNode = mkNode(key, value, NULL, NULL);
+        avlt->right = newNode;
+        
+        //return avlt;
+        
     }
+    /* 2. Update height of this ancestor avlt */
+    avlt->height = (getBigger(getHeight(avlt->left), getHeight(avlt->right))) + 1;
+ 
+    /* 3. Get the balance factor of this ancestor avlt to check whether
+       this avlt became unbalanced */
+    int balance = getBalance(avlt);
+ 
+    // If this avlt becomes unbalanced, then there are 4 cases
+ 
+    // Left Left Case
+    if (balance > 1 && key < avlt->left->key)
+        return rotateRight(avlt);
+ 
+    // Right Right Case
+    if (balance < -1 && key > avlt->right->key)
+        return rotateLeft(avlt);
+ 
+    // Left Right Case
+    if (balance > 1 && key > avlt->left->key)
+    {
+        avlt->left =  rotateLeft(avlt->left);
+        return rotateRight(avlt);
+    }
+ 
+    // Right Left Case
+    if (balance < -1 && key < avlt->right->key)
+    {
+        avlt->right = rotateRight(avlt->right);
+        return rotateLeft(avlt);
+    }
+ 
+    /* return the (unchanged) avlt pointer */
+    return avlt;
 }
 
 
@@ -221,24 +269,24 @@ avltree *deleteKey( int key, avltree *tree)
     
   }
 
-  avlt->height = max(height(avlt->left), height(avlt->right)) + 1;
+  avlt->height = getBigger(getHeight(avlt->left), getHeight(avlt->right)) + 1;
   int balance = getBalance(avlt);
   if (balance > 1 && getBalance(avlt->left) >= 0)
-    return rightRotate(avlt);
+    return rotateRight(avlt);
 
   if (balance > 1 && getBalance(avlt->left) < 0)
   {
-    avlt->left =  leftRotate(avlt->left);
-    return rightRotate(avlt);
+    avlt->left =  rotateLeft(avlt->left);
+    return rotateRight(avlt);
   }
 
   if (balance < -1 && getBalance(avlt->right) <= 0)
-    return leftRotate(avlt);
+    return rotateLeft(avlt);
 
   if (balance < -1 && getBalance(avlt->right) > 0)
   {
-    avlt->right = rightRotate(avlt->right);
-    return leftRotate(avlt);
+    avlt->right = rotateRight(avlt->right);
+    return rotateLeft(avlt);
   }
 
   return avlt;
