@@ -4,7 +4,7 @@
 
 void main()
 {
- avltree *tree;
+  avltree *tree;
   avltree *tree1;
   avltree *tree2;
   tree1 = mkNode(5,5,NULL,NULL);
@@ -12,7 +12,7 @@ void main()
   //tree = mkNode(6,6, tree1, tree2);
 
 
-
+printAvlTree(tree1);
   
   insertKey(6,6, tree1);
   insertKey(4,4, tree1);
@@ -32,6 +32,7 @@ void main()
   printf("-------------------------------------------\n");
 
   tree = freeNode(tree1);
+  printf("Freed\n");
   printAvlTree(tree);
 
   printf("-------------------------------------------\n");

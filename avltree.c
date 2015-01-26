@@ -129,8 +129,8 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     avlt->right = leftOfRight;
  
     //  fix heights of thier new poistions
-    avlt->height = (getBigger(avlt->left->height, avlt->right->height))+1;
-    right->height = (getBigger(right->left->height, right->right->height))+1;
+    avlt->height = (getBigger(getHeight(avlt->left), getHeight(avlt->right)))+1;
+    right->height = (getBigger(getHeight(right->left), getHeight(right->right)))+1;
  
     //  new tree
     return right;
@@ -145,8 +145,8 @@ avltree *rotateRight(avltree *avlt){
     avlt->left = rightOfLeft;
  
     // fix heights with nwe positions
-    avlt->height = getBigger(avlt->left->height, avlt->right->height)+1;
-    left->height = getBigger(left->left->height, left->right->height)+1;
+    avlt->height = (getBigger(getHeight(avlt->left), getHeight(avlt->right)))+1;
+    left->height = (getBigger(getHeight(left->left), getHeight(left->right)))+1;
  
     //new tree
     return left;
