@@ -93,41 +93,33 @@ bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 
 bintree *insertKey( int key, int value, bintree *tree)
 {
-    bintree *bt = tree;
-    if( tree->key > key && tree->left != NULL) {
-        tree = tree->left;
+    bintree *bt =(bintree*) malloc(sizeof(bintree));
+    bt=tree;
+    if( bt->key > key && bt->left != NULL) {
+        bt = bt->left;
         insertKey(key,value,bt);
         return bt;
     }
-    else if(tree->key < key && tree->right != NULL) {
-        tree = tree->right;
+    else if(bt->key < key && bt->right != NULL) {
+        bt = bt->right;
         insertKey(key,value, bt);
         return bt;
     }
-    else if (tree->key == key){
+    else if (bt->key == key){
       bt->value = value;
     }
-    else if(tree->left == NULL && key < tree->key) {
+    else if(bt->left == NULL && key < bt->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->left = newNode;
-        //bintree *newNode = (bintree*)malloc(sizeof(bintree));
-        //newNode->key =key;
-        //newNode->value = value;
-        //newNode->left = NULL;
-        //newNode->right = NULL;
-        //tree->left = newNode;
         return bt;
+        
     }
     else if(tree->right == NULL  && key > tree->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->right = newNode;
-        //bintree *newtree = (bintree*)malloc(sizeof(bintree));
-        //newtree->key = key;
-        //newtree->value = value;
-        //newtree->left = NULL;
-        //newtree->right = NULL;
-        //tree->right = newtree;
+        
         return bt;
+        
     }
 }
 
@@ -140,7 +132,7 @@ bintree *deleteKey( int key, bintree *tree)
   if(found==0)
   {
     printf("Could not find the key. \n");
-    return NULL;
+    return bt;
 
   }else if(bt->left!=NULL && bt->left->key == key){
     

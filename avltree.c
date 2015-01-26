@@ -74,8 +74,8 @@ void printAvlTreeOff( int off, avltree *tree)
 }
 
 
-int getBigger(int x, int y){
-  if(a>b) return a; else return y;
+int getBigger(int a, int b){
+  if(a>b) return a; else return b;
 }
 
 
@@ -105,10 +105,10 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
  * used in case the right side of the tree has a height 
  * difference with the left side more than 1. (i.e. balance factor of this node is more than 1)
  */
- bintree *rotateLeft(bintree *bt)
+ avltree *rotateLeft(bintree *bt)
 {
-    bintree *right = bt->right;
-    bintree *leftOfRight = right->left;
+    avltree *right = bt->right;
+    avltree *leftOfRight = right->left;
  
     // rotate
     right->left = bt;
@@ -122,9 +122,9 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     return right;
 }
 
-bintree *rotateRight(bintree *bt){
-  bintree *left = bt->left;
-  bintree *rightOfLeft = left->right;
+avltree *rotateRight(bintree *bt){
+  avltree *left = bt->left;
+  avltree *rightOfLeft = left->right;
  
     // rotate
     left->right = bt;
@@ -138,37 +138,85 @@ bintree *rotateRight(bintree *bt){
     return left;
 }
 
-avltree *insertKey( int key, int value, avltree *tree)
+
+int getHeight(avltree *tree){
+  if(tree==NULL){
+    return 0;
+  }else return tree->height;
+}
+ 
+// Get Balance factor of node N
+int getBalance(avltree *bt)
 {
-    if( tree->key > key && tree->left != NULL) {
-        tree = tree->left;
-        insertKey(key,value,tree);
+    if (bt == NULL)
+        return 0;
+    return getHeight(bt->left) - getHeight(bt->right);
+}
+ 
+avltree insert(int key,int value, avltree *tree)
+{
+    /* 1.  Perform the normal BST rotation */
+   avltree *bt =(avltree*) malloc(sizeof(avltree));
+    bt=tree;
+    if( bt->key > key && bt->left != NULL) {
+        bt = bt->left;
+        insertKey(key,value,bt);
+        //return bt;
     }
-    else if(tree->key < key && tree->right != NULL) {
-        tree = tree->right;
-        insertKey(key,value, tree);
+    else if(bt->key < key && bt->right != NULL) {
+        bt = bt->right;
+        insertKey(key,value, bt);
+       // return bt;
     }
-    else if (tree->key == key){
-      tree->value = value;
+    else if (bt->key == key){
+      bt->value = value;
     }
-    else if(tree->left == NULL && key < tree->key) {
-        avltree *newNode = (avltree*)malloc(sizeof(avltree));
-        newNode->key =key;
-        newNode->value = value;
-        newNode->left = NULL;
-        newNode->right = NULL;
-        tree->left = newNode;
-        return;
+    else if(bt->left == NULL && key < bt->key) {
+        bintree *newNode = mkNode(key, value, NULL, NULL);
+        bt->left = newNode;
+        //return bt;
+        
     }
     else if(tree->right == NULL  && key > tree->key) {
-        avltree *newtree = (avltree*)malloc(sizeof(avltree));
-        newtree->key = key;
-        newtree->value = value;
-        newtree->left = NULL;
-        newtree->right = NULL;
-        tree->right = newtree;
-        return;
+        bintree *newNode = mkNode(key, value, NULL, NULL);
+        bt->right = newNode;
+        
+        //return bt;
+        
     }
+    /* 2. Update height of this ancestor node */
+    bt->height = getHeight(bt->left), getHeight(bt->right)) + 1;
+ 
+    /* 3. Get the balance factor of this ancestor node to check whether
+       this node became unbalanced */
+    int balance = getBalance(bt);
+ 
+    // If this node becomes unbalanced, then there are 4 cases
+ 
+    // Left Left Case
+    if (balance > 1 && key < bt->left->key)
+        return rotateRight(bt);
+ 
+    // Right Right Case
+    if (balance < -1 && key > bt->right->key)
+        return rotateLeft(bt);
+ 
+    // Left Right Case
+    if (balance > 1 && key > bt->left->key)
+    {
+        node->left =  rotateLeft(bt->left);
+        return rotateRight(bt);
+    }
+ 
+    // Right Left Case
+    if (balance < -1 && key < bt->right->key)
+    {
+        node->right = rotateRight(bt->right);
+        return rotateLeft(bt);
+    }
+ 
+    /* return the (unchanged) node pointer */
+    return bt;
 }
 
 
