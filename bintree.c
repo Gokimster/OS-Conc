@@ -93,34 +93,41 @@ bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 
 bintree *insertKey( int key, int value, bintree *tree)
 {
+    bintree *bt = tree;
     if( tree->key > key && tree->left != NULL) {
         tree = tree->left;
-        insertKey(key,value,tree);
+        insertKey(key,value,bt);
+        return bt;
     }
     else if(tree->key < key && tree->right != NULL) {
         tree = tree->right;
-        insertKey(key,value, tree);
+        insertKey(key,value, bt);
+        return bt;
     }
     else if (tree->key == key){
-      tree->value = value;
+      bt->value = value;
     }
     else if(tree->left == NULL && key < tree->key) {
-        bintree *newNode = (bintree*)malloc(sizeof(bintree));
-        newNode->key =key;
-        newNode->value = value;
-        newNode->left = NULL;
-        newNode->right = NULL;
-        tree->left = newNode;
-        return;
+        bintree *newNode = mkNode(key, value, NULL, NULL);
+        bt->left = newNode;
+        //bintree *newNode = (bintree*)malloc(sizeof(bintree));
+        //newNode->key =key;
+        //newNode->value = value;
+        //newNode->left = NULL;
+        //newNode->right = NULL;
+        //tree->left = newNode;
+        return bt;
     }
     else if(tree->right == NULL  && key > tree->key) {
-        bintree *newtree = (bintree*)malloc(sizeof(bintree));
-        newtree->key = key;
-        newtree->value = value;
-        newtree->left = NULL;
-        newtree->right = NULL;
-        tree->right = newtree;
-        return;
+        bintree *newNode = mkNode(key, value, NULL, NULL);
+        bt->right = newNode;
+        //bintree *newtree = (bintree*)malloc(sizeof(bintree));
+        //newtree->key = key;
+        //newtree->value = value;
+        //newtree->left = NULL;
+        //newtree->right = NULL;
+        //tree->right = newtree;
+        return bt;
     }
 }
 
@@ -145,7 +152,7 @@ bintree *deleteKey( int key, bintree *tree)
     bt->right=mergeBinTrees(bt->right->left, bt->right->right);
      return bt;
   }else if(bt->key==key){
-  bt = mergeBinTrees(bt->left, bt->right); 
+    bt = mergeBinTrees(bt->left, bt->right); 
    return bt;
   }
   else 

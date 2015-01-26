@@ -5,17 +5,32 @@
 struct AVLTREE {
   int key;
   int value;
+  int height;
   avltree *left;
   avltree *right;
 } ;
+
+/*------------------------------------------------------------------
+ * TO DO BE DOOOO BEEEE DOO                                         |
+ *------------------------------------------------------------------
+ * balance factor function for the avl. bf <=1                      |
+ * keep the height of the tree in  a var                            |
+ * left rotation                                                    |
+ * right rotation                                                   |
+ * mebbeh a function to get the bigger number, just for convenience |
+ *------------------------------------------------------------------
+ */
+
 
 avltree *mkNode( int key, int value, avltree *left, avltree *right)
 {
   avltree *bt =(avltree*) malloc(sizeof(avltree));
   bt->key = key;
   bt->value = value;
+  bt->height = height;
   bt->left = left;
   bt->right = right;
+
   return bt;
 }
 
@@ -58,6 +73,13 @@ void printAvlTreeOff( int off, avltree *tree)
   }
 }
 
+
+int getBigger(int x, int y){
+  if(a>b) return a; else return y;
+}
+
+
+
 void printAvlTree( avltree *tree)
 {
   printAvlTreeOff( 0, tree);
@@ -76,6 +98,44 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     bt = mergeAvlTrees(bt, tree2->left);
     bt = mergeAvlTrees(bt, tree2->right);
   }
+}
+
+/*a function to do the left rotation of the tree 
+ *it helps handling the case of an unbalanced tree
+ * used in case the right side of the tree has a height 
+ * difference with the left side more than 1. (i.e. balance factor of this node is more than 1)
+ */
+ bintree *rotateLeft(bintree *bt)
+{
+    bintree *right = bt->right;
+    bintree *leftOfRight = right->left;
+ 
+    // rotate
+    right->left = bt;
+    bt->right = leftOfRight;
+ 
+    //  fix heights of thier new poistions
+    bt->height = getBigger(bt->left->height, bt->right->height)+1;
+    right->height = getBigger(right->left->height, right->right->height)+1;
+ 
+    //  new tree
+    return right;
+}
+
+bintree *rotateRight(bintree *bt){
+  bintree *left = bt->left;
+  bintree *rightOfLeft = left->right;
+ 
+    // rotate
+    left->right = bt;
+    bt->left = rightOfLeft;
+ 
+    // fix heights with nwe positions
+    bt->height = getBigger(bt->left->height, bt->right->height)+1;
+    left->height = getBigger(left->left->height, left->right->height)+1;
+ 
+    //new tree
+    return left;
 }
 
 avltree *insertKey( int key, int value, avltree *tree)
