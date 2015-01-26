@@ -117,7 +117,6 @@ bintree *insertKey( int key, int value, bintree *tree)
     else if(tree->right == NULL  && key > tree->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->right = newNode;
-        
         return bt;
         
     }

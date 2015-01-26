@@ -34,14 +34,27 @@ avltree *mkNode( int key, int value, avltree *left, avltree *right)
   return bt;
 }
 
-void freeNode( avltree * tree)
+avltree *freeNode( avltree * tree)
 {
-  
+  avltree *temp = mergeAvlTrees(tree->left, tree->right);
+  free(tree);
+  return temp;
 }
 
-void freeAvlTree( avltree *tree)
+avltree *freeAvlTree( avltree *tree)
 {
-  /* fill in here */
+  if (tree->left != NULL)
+  {
+    freeAvlTree(tree->left);
+    tree->left = NULL;
+  }
+  if (tree->right != NULL)
+  {
+    freeAvlTree(tree->right);
+    tree->right = NULL;
+  }
+
+  return freeNode(tree);
 }
 
 static
