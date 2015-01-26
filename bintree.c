@@ -19,14 +19,27 @@ bintree *mkNode( int key, int value, bintree *left, bintree *right)
   return bt;
 }
 
-void freeNode( bintree * tree)
+bintree *freeNode( bintree * tree)
 {
-  
+  bintree *temp = mergeBinTrees(tree->left, tree->right);
+  free(tree);
+  return temp;
 }
 
-void freeBinTree( bintree *tree)
+bintree *freeBinTree( bintree *tree)
 {
-  /* fill in here */
+  if (tree->left != NULL)
+  {
+    freeBinTree(tree->left);
+    tree->left = NULL;
+  }
+  if (tree->right != NULL)
+  {
+    freeBinTree(tree->right);
+    tree->right = NULL;
+  }
+
+  return freeNode(tree);
 }
 
 static
@@ -63,7 +76,7 @@ void printBinTree( bintree *tree)
   printBinTreeOff( 0, tree);
 }
 
-//prioritising tree2 - if a kew appears in both trees, it will keep the one in the second tree
+//prioritising tree2 - if a new appears in both trees, it will keep the one in the second tree
 bintree *mergeBinTrees( bintree *tree1, bintree *tree2)
 {
   bintree *bt =(bintree*) malloc(sizeof(bintree));

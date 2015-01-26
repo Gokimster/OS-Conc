@@ -2,9 +2,9 @@ typedef struct BINTREE bintree;
 
 extern bintree *mkNode( int key, int value, bintree *left, bintree *right);
 
-extern void freeNode( bintree *tree);
+extern bintree *freeNode( bintree *tree);
 
-extern void freeBinTree( bintree *tree);
+extern bintree *freeBinTree( bintree *tree);
 
 extern void printBinTree( bintree *tree);
 
