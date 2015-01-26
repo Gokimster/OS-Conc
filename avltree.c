@@ -24,14 +24,14 @@ struct AVLTREE {
 
 avltree *mkNode( int key, int value, avltree *left, avltree *right)
 {
-  avltree *bt =(avltree*) malloc(sizeof(avltree));
-  bt->key = key;
-  bt->value = value;
-  bt->height = height;
-  bt->left = left;
-  bt->right = right;
+  avltree *avlt =(avltree*) malloc(sizeof(avltree));
+  avlt->key = key;
+  avlt->value = value;
+  avlt->height = height;
+  avlt->left = left;
+  avlt->right = right;
 
-  return bt;
+  return avlt;
 }
 
 avltree *freeNode( avltree * tree)
@@ -88,7 +88,7 @@ void printAvlTreeOff( int off, avltree *tree)
 
 
 int getBigger(int x, int y){
-  if(a>b) return a; else return y;
+  if(x>y) return x; else return y;
 }
 
 
@@ -101,15 +101,15 @@ void printAvlTree( avltree *tree)
 //prioritising tree2 - if a kew appears in both trees, it will keep the one in the second tree
 avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
 {
-  avltree *bt =(avltree*) malloc(sizeof(avltree));
-  bt = tree1;
+  avltree *avlt =(avltree*) malloc(sizeof(avltree));
+  avlt = tree1;
   if(tree2 == NULL)
-    return bt;
+    return avlt;
   else
   {
-    insertKey(tree2->key, tree2->value, bt);
-    bt = mergeAvlTrees(bt, tree2->left);
-    bt = mergeAvlTrees(bt, tree2->right);
+    insertKey(tree2->key, tree2->value, avlt);
+    avlt = mergeAvlTrees(avlt, tree2->left);
+    avlt = mergeAvlTrees(avlt, tree2->right);
   }
 }
 
@@ -118,33 +118,33 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
  * used in case the right side of the tree has a height 
  * difference with the left side more than 1. (i.e. balance factor of this node is more than 1)
  */
- bintree *rotateLeft(bintree *bt)
+ avltree *rotateLeft(avltree *avlt)
 {
-    bintree *right = bt->right;
-    bintree *leftOfRight = right->left;
+    avltree *right = avlt->right;
+    avltree *leftOfRight = right->left;
  
     // rotate
-    right->left = bt;
-    bt->right = leftOfRight;
+    right->left = avlt;
+    avlt->right = leftOfRight;
  
     //  fix heights of thier new poistions
-    bt->height = getBigger(bt->left->height, bt->right->height)+1;
+    avlt->height = getBigger(avlt->left->height, avlt->right->height)+1;
     right->height = getBigger(right->left->height, right->right->height)+1;
  
     //  new tree
     return right;
 }
 
-bintree *rotateRight(bintree *bt){
-  bintree *left = bt->left;
-  bintree *rightOfLeft = left->right;
+avltree *rotateRight(avltree *avlt){
+  avltree *left = avlt->left;
+  avltree *rightOfLeft = left->right;
  
     // rotate
-    left->right = bt;
-    bt->left = rightOfLeft;
+    left->right = avlt;
+    avlt->left = rightOfLeft;
  
     // fix heights with nwe positions
-    bt->height = getBigger(bt->left->height, bt->right->height)+1;
+    avlt->height = getBigger(avlt->left->height, avlt->right->height)+1;
     left->height = getBigger(left->left->height, left->right->height)+1;
  
     //new tree
@@ -187,7 +187,61 @@ avltree *insertKey( int key, int value, avltree *tree)
 
 avltree *deleteKey( int key, avltree *tree)
 {
-  /* fill in here */
+  avltree *avlt =(avltree*) malloc(sizeof(avltree));
+   avlt=tree;
+  int found = findKey(key, tree);
+  if(found==0)
+  {
+    printf("Could not find the key. \n");
+    return NULL;
+
+  }else if(avlt->left!=NULL && avlt->left->key == key){
+    
+    avlt->left=mergeAvlTrees(avlt->left->left, avlt->left->right);
+    return avlt;
+ 
+  }else if(avlt->right!=NULL && avlt->right->key == key){
+     
+    avlt->right=mergeAvlTrees(avlt->right->left, avlt->right->right);
+     return avlt;
+  }else if(avlt->key==key){
+    avlt = mergeAvlTrees(avlt->left, avlt->right); 
+   return avlt;
+  }
+  else 
+  {
+    if(key > avlt->key && avlt->right!=NULL)
+    {
+     deleteKey(key,avlt->right);
+     return avlt;
+    }else if(key < avlt->key){
+    deleteKey(key,avlt->left);
+     return avlt;
+    }
+    
+  }
+
+  avlt->height = max(height(avlt->left), height(avlt->right)) + 1;
+  int balance = getBalance(avlt);
+  if (balance > 1 && getBalance(avlt->left) >= 0)
+    return rightRotate(avlt);
+
+  if (balance > 1 && getBalance(avlt->left) < 0)
+  {
+    avlt->left =  leftRotate(avlt->left);
+    return rightRotate(avlt);
+  }
+
+  if (balance < -1 && getBalance(avlt->right) <= 0)
+    return leftRotate(avlt);
+
+  if (balance < -1 && getBalance(avlt->right) > 0)
+  {
+    avlt->right = rightRotate(avlt->right);
+    return leftRotate(avlt);
+  }
+
+  return avlt;
 }
 
 int findKey( int key, avltree *tree)

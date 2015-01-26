@@ -127,8 +127,7 @@ bintree *deleteKey( int key, bintree *tree)
   int found = findKey(key, tree);
   if(found==0)
   {
-    printf("Could not find the key. \n");
-    return NULL;
+    return bt;
 
   }else if(bt->left!=NULL && bt->left->key == key){
     
