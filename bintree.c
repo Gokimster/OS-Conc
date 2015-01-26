@@ -95,12 +95,12 @@ bintree *insertKey( int key, int value, bintree *tree)
 {
     bintree *bt = tree;
     if( tree->key > key && tree->left != NULL) {
-        tree = tree->left;
+        bt = tree->left;
         insertKey(key,value,bt);
         return bt;
     }
     else if(tree->key < key && tree->right != NULL) {
-        tree = tree->right;
+        bt = tree->right;
         insertKey(key,value, bt);
         return bt;
     }
@@ -110,23 +110,11 @@ bintree *insertKey( int key, int value, bintree *tree)
     else if(tree->left == NULL && key < tree->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->left = newNode;
-        //bintree *newNode = (bintree*)malloc(sizeof(bintree));
-        //newNode->key =key;
-        //newNode->value = value;
-        //newNode->left = NULL;
-        //newNode->right = NULL;
-        //tree->left = newNode;
         return bt;
     }
     else if(tree->right == NULL  && key > tree->key) {
         bintree *newNode = mkNode(key, value, NULL, NULL);
         bt->right = newNode;
-        //bintree *newtree = (bintree*)malloc(sizeof(bintree));
-        //newtree->key = key;
-        //newtree->value = value;
-        //newtree->left = NULL;
-        //newtree->right = NULL;
-        //tree->right = newtree;
         return bt;
     }
 }
