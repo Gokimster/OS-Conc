@@ -172,6 +172,10 @@ avltree *insertKey(int key,int value, avltree *tree)
     /* 1.  Perform the normal BST rotation */
    avltree *avlt =(avltree*) malloc(sizeof(avltree));
     avlt=tree;
+
+    if (avlt == NULL)
+        return(mkNode(key,value, NULL, NULL));
+
     if( avlt->key > key && avlt->left != NULL) {
         avlt = avlt->left;
         insertKey(key,value,avlt);
