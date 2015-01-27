@@ -107,7 +107,7 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     return avlt;
   else
   {
-    insertKey(tree2->key, tree2->value, avlt);
+    avlt = insertKey(tree2->key, tree2->value, avlt);
     avlt = mergeAvlTrees(avlt, tree2->left);
     avlt = mergeAvlTrees(avlt, tree2->right);
   }
