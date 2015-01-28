@@ -8,8 +8,6 @@ void main()
   avltree *tree1;
   avltree *tree2;
   tree1 = mkNode(5,5,NULL,NULL);
- // tree2 = mkNode(7,7,NULL,NULL);
-  //tree = mkNode(6,6, tree1, tree2);
 
 
   printAvlTree(tree1);
@@ -54,6 +52,9 @@ void main()
   tree1 = insertKey(3,3, tree1);
   tree1 = insertKey(1,1, tree1);
   printAvlTree(tree1);
+  printf("-------------------------------------------\n");
+  printf("Freed\n");
+  printf("-------------------------------------------\n");
   tree = freeAvlTree(tree1);
   printAvlTree(tree);
   }

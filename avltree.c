@@ -107,7 +107,7 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
     return avlt;
   else
   {
-    insertKey(tree2->key, tree2->value, avlt);
+    avlt = insertKey(tree2->key, tree2->value, avlt);
     avlt = mergeAvlTrees(avlt, tree2->left);
     avlt = mergeAvlTrees(avlt, tree2->right);
   }
@@ -120,8 +120,6 @@ avltree *mergeAvlTrees( avltree *tree1, avltree *tree2)
  */
 avltree *rotateLeft(avltree *avlt)
 { 
-    printf("ROTATING LEFT \n");
-    printAvlTree(avlt);
     avltree *right = avlt->right;
 
     avltree *leftOfRight = right->left;
@@ -135,19 +133,11 @@ avltree *rotateLeft(avltree *avlt)
     right->height = (getBigger(getHeight(right->left), getHeight(right->right)))+1;
  
     //  new tree
-    printf("ROTATING LEFT Done\n");
-    printAvlTree(right);
     return right;
 }
 
 avltree *rotateRight( avltree *avlt){
-  printf("ROTATING RIGHT \n");
-  printAvlTree(avlt);
   avltree *left = avlt->left;
-  if (left == NULL)
-  {
-    printf("NULL RIGHT \n");
-  }
   avltree *rightOfLeft = left->right;
  
     // rotate
@@ -159,8 +149,6 @@ avltree *rotateRight( avltree *avlt){
     left->height = (getBigger(getHeight(left->left), getHeight(left->right)))+1;
  
     //new tree
-    printf("ROTATING RIGHT Done\n");
-    printAvlTree(left);
     return left;
 }
 

@@ -8,8 +8,6 @@ void main()
   bintree *tree1;
   bintree *tree2;
   tree1 = mkNode(5,5,NULL,NULL);
- // tree2 = mkNode(7,7,NULL,NULL);
-  //tree = mkNode(6,6, tree1, tree2);
 
 
 
@@ -22,9 +20,8 @@ void main()
      
   printBinTree(tree1);
   printf("-------------------------------------------\n");
-  printf("Removing key 3\n");
+  printf("Removing key 4\n");
   printf("-------------------------------------------\n");
-  //deleteKey(5, tree1);
   printBinTree(deleteKey(4,tree1));
     
   printf("-------------------------------------------\n");
