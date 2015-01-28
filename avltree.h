@@ -14,4 +14,6 @@ extern avltree *insertKey( int key, int value, avltree *tree);
 
 extern avltree *deleteKey( int key, avltree *tree);
 
+extern avltree *rebalance( avltree *tree, int key);
+
 extern int findKey( int key, avltree *tree);

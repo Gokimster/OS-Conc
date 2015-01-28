@@ -12,19 +12,20 @@ void main()
   //tree = mkNode(6,6, tree1, tree2);
 
 
-printAvlTree(tree1);
+  printAvlTree(tree1);
   
   insertKey(6,6, tree1);
   insertKey(4,4, tree1);
   insertKey(7,7, tree1);
   insertKey(3,3, tree1);
   insertKey(1,1, tree1);
-     
+  printf("-------------------------------------------\n");
+  printf("Inserting Done\n");
+  printf("-------------------------------------------\n");
   printAvlTree(tree1);
   printf("-------------------------------------------\n");
-  printf("Removing key 3\n");
+  printf("Removing key 4\n");
   printf("-------------------------------------------\n");
-  //deleteKey(5, tree1);
   printAvlTree(deleteKey(4,tree1));
     
   printf("-------------------------------------------\n");
