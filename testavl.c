@@ -14,11 +14,11 @@ void main()
 
   printAvlTree(tree1);
   
-  insertKey(6,6, tree1);
-  insertKey(4,4, tree1);
-  insertKey(7,7, tree1);
-  insertKey(3,3, tree1);
-  insertKey(1,1, tree1);
+  tree1 = insertKey(6,6, tree1);
+  tree1 = insertKey(4,4, tree1);
+  tree1 = insertKey(7,7, tree1);
+  tree1 = insertKey(8,8, tree1);
+  tree1 = insertKey(9,9, tree1);
   printf("-------------------------------------------\n");
   printf("Inserting Done\n");
   printf("-------------------------------------------\n");
@@ -47,12 +47,13 @@ void main()
   printf("-------------------------------------------\n");
   printf("Free tree \n");
   printf("-------------------------------------------\n");
-  tree2 = mkNode(5,5,NULL,NULL);
-  insertKey(6,6, tree2);
-  insertKey(4,4, tree2);
-  insertKey(7,7, tree2);
-  insertKey(3,3, tree2);
-  insertKey(1,1, tree2);
-  tree = freeAvlTree(tree2);
+  tree1 = mkNode(5,5,NULL,NULL);
+  tree1 = insertKey(6,6, tree1);
+  tree1 = insertKey(4,4, tree1);
+  tree1 = insertKey(7,7, tree1);
+  tree1 = insertKey(3,3, tree1);
+  tree1 = insertKey(1,1, tree1);
+  printAvlTree(tree1);
+  tree = freeAvlTree(tree1);
   printAvlTree(tree);
   }
