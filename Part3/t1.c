@@ -33,6 +33,7 @@ void measure_fork (int n)
         perror("fork");
         abort();
       }else if (pids[i] == 0) {
+        dummy(dummy);
         exit(0);
       
       }
