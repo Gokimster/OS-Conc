@@ -114,31 +114,24 @@ int process( int tid, int data, int  workload)
 
 void * pipeline( void *arg)
 {
-  printf("in pipeline \n");
   int data;
   int workload;
   int suc;
   buffer_t *in;
   buffer_t *out;
   int tid;
-  printf("DAFUK \n");
   in = ((threadArgs_t *)arg)->in_buf;
   out = ((threadArgs_t *)arg)->out_buf;
   tid = ((threadArgs_t *)arg)->tid;
   workload = ((threadArgs_t *)arg)->workload;
-  printf("tail %d, head", in->tail);
-  while((in->tail < (N_DATA - 1))||(in->tail != in->head))
+  while((in->tail < (N_DATA))||(in->tail != in->head))
   {
-    printf("tail %d head %d", in->tail, in->head);
-    printf("in while pipe \n");
     if(pop(in, &data) == 1)
     {
       data = process(tid, data, workload);
       push(out, data);
-      printf("pushing \n");
     }
   }
-  printf("DONE YO \n");
 
 }
 
@@ -178,15 +171,15 @@ void main(int argc, char *argv[])
   for(i=0;i<N_THREADS;i++){
     pthread_t tid;
     args[i].tid = i;
-    int res=(int) pthread_create (&tid, NULL, pipeline, NULL);
+    int res=(int) pthread_create (&tid, NULL, pipeline, (void *)&args[i]);
     if (res < 0) {
       perror("error creating thread");
       abort();
     }else if (res==0) {
 
       threads[i]=tid;
+      pipeline;
       printf("Created thread %d \n", i);
-      printf("y u no %d \n", i);
     }
   }
   /**
@@ -198,19 +191,19 @@ void main(int argc, char *argv[])
     push(in, i);
   }
 
-  printf("PUSHED SHIT %d \n", i);
   for(i=0; i<N_THREADS; i++)
   {
-    //pthread_join (threads[i], NULL); 
-    printf("done"); 
+    pthread_join (threads[i], NULL); 
   }
 
   for(i=0; i<N_DATA;i++)
   {
-    suc = pop(out, &data);
-    printf("NOTHING");
-    if (suc == 1)
-      printf("Popped %d from output", data);
+    suc = 0;
+    while (suc == 0)
+    {
+      suc = pop(out, &data);
+    }
+    printf("Popped %d from output \n", data);
   }
 }
 
