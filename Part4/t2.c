@@ -6,11 +6,11 @@
 
 #define N_THREADS 3
 #define BUFFER_SIZE 200
-#define N_DATA 3//100000
+#define N_DATA 800//100000
 #define WORKLOAD1 100000
 #define WORKLOAD2 100000
 #define WORKLOAD3 100000
-#define OUTPUT 50
+#define OUTPUT 100000
 
 struct timespec start[N_DATA], stop[N_DATA];
 double minLatency=100000.00;
@@ -132,7 +132,7 @@ void * pipeline( void *arg)
   out = ((threadArgs_t *)arg)->out_buf;
   tid = ((threadArgs_t *)arg)->tid;
   workload = ((threadArgs_t *)arg)->workload;
-  while((in->tail < (N_DATA))||(in->tail != in->head))
+  while(i<N_DATA)
   {
     if(pop(in, &data) == 1)
     {
@@ -140,7 +140,7 @@ void * pipeline( void *arg)
         clock_gettime (CLOCK_REALTIME, &start[i]);
       data = process(tid, data, workload);
       push(out, data);
-      if(tid == (N_DATA - 1))
+      if(tid == (2))
       {
         clock_gettime (CLOCK_REALTIME, &stop[i]);
       }
@@ -255,6 +255,8 @@ void main(int argc, char *argv[])
 
   printf ("minLatency=%5.0f (mics) maxLatency=%5.0f (mics) avgLatency=%5.0f (mics) throughput=%5.0f \n",
            minLatency, maxLatency, avgLatency, tput);
+  printf ("N_DATA=%d (mics) workload1=%d (mics) workload2=%d (mics) workload3=%d \n",
+           N_DATA, WORKLOAD1, WORKLOAD2, WORKLOAD3);
 }
 
   
