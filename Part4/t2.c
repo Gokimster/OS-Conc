@@ -6,16 +6,17 @@
 
 #define N_THREADS 3
 #define BUFFER_SIZE 200
-#define N_DATA 800//100000
+#define NO_DATA 10000//100000
 #define WORKLOAD1 100000
 #define WORKLOAD2 100000
 #define WORKLOAD3 100000
 #define OUTPUT 100000
 
-struct timespec start[N_DATA], stop[N_DATA];
+struct timespec start[NO_DATA], stop[NO_DATA];
 double minLatency=100000.00;
 double maxLatency=0;
 double avgLatency=0;
+int N_DATA = NO_DATA;
 
 /*******************************************************************************
  **  
@@ -106,14 +107,14 @@ int process( int tid, int data, int  workload)
   int i;
 
 #ifdef OUTPUT
-    printf( "[%d] processing item %d!\n", tid, data);
+    //printf( "[%d] processing item %d!\n", tid, data);
 #endif
 
   for( i=0; i<workload; i++)
     data = workUnit( data);
 
 #ifdef OUTPUT
-    printf( "[%d] item %d done!\n", tid, data);
+   // printf( "[%d] item %d done!\n", tid, data);
 #endif
 
   return( data);
@@ -193,6 +194,9 @@ void main(int argc, char *argv[])
   buffer_t *in, *inter1, *inter2, *out;
   double tput;
 
+  if( argc == 2) {
+     N_DATA = atoi( argv[1]);
+  }
   in = createBuffer( N_DATA+1);
   inter1 = createBuffer( BUFFER_SIZE);
   inter2 = createBuffer( BUFFER_SIZE);
@@ -223,7 +227,7 @@ void main(int argc, char *argv[])
 
       threads[i]=tid;
       pipeline;
-      printf("Created thread %d \n", i);
+      //printf("Created thread %d \n", i);
     }
   }
   /**
@@ -250,12 +254,11 @@ void main(int argc, char *argv[])
     {
       suc = pop(out, &data);
     }
-    printf("Popped %d from output \n", data);
   }
 
   printf ("minLatency=%5.0f (mics) maxLatency=%5.0f (mics) avgLatency=%5.0f (mics) throughput=%5.0f \n",
            minLatency, maxLatency, avgLatency, tput);
-  printf ("N_DATA=%d (mics) workload1=%d (mics) workload2=%d (mics) workload3=%d \n",
+  printf ("N_DATA=%d ; workload1=%d ; workload2=%d ; workload3=%d \n",
            N_DATA, WORKLOAD1, WORKLOAD2, WORKLOAD3);
 }
 
