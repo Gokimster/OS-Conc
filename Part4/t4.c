@@ -4,9 +4,10 @@
 #include <time.h>
 #include <sys/time.h>
 
+
 #define N_THREADS 3
 #define BUFFER_SIZE 200
-#define NO_DATA 10000//100000
+#define NO_DATA 1000//100000
 #define WORKLOAD1 100000
 #define WORKLOAD2 100000
 #define WORKLOAD3 100000
@@ -18,7 +19,17 @@ double maxLatency=0;
 double avgLatency=0;
 int N_DATA = NO_DATA;
 
+typedef struct pthread_barrier_t {
+  pthread_mutex_t mtx;
+  pthread_cond_t cv;
+  int valid;
+  int n_threads_required;
+  int n_threads_left;
+  int cycle; 
+} pthread_barrier_t;
+
 pthread_mutex_t lock;
+pthread_barrier_t barrier;
 
 /*******************************************************************************
  **  
@@ -146,6 +157,7 @@ void * pipeline( void *arg)
         clock_gettime (CLOCK_REALTIME, &start[i]);
       data = process(tid, data, workload);
       push(out, data);
+       pthread_barrier_wait(&barrier);
       if(tid == (2))
       {
         clock_gettime (CLOCK_REALTIME, &stop[i]);
@@ -198,12 +210,16 @@ void main(int argc, char *argv[])
   pthread_t threads[N_THREADS];
   buffer_t *in, *inter1, *inter2, *out;
   double tput;
+  int c;
 
   if (pthread_mutex_init(&lock, NULL) != 0)
     {
         printf("\n mutex init failed\n");
         return 1;
     }
+
+
+    c = pthread_barrier_init(&barrier, NULL,N_THREADS);
 
 
   if( argc == 2) {
