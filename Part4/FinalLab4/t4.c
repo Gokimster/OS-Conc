@@ -9,8 +9,8 @@
 #define BUFFER_SIZE 200
 #define NO_DATA 1000//100000
 #define WORKLOAD1 100000
-#define WORKLOAD2 100000
-#define WORKLOAD3 100000
+#define WORKLOAD2 100
+#define WORKLOAD3 100
 #define OUTPUT 100000
 
 struct timespec start[NO_DATA], stop[NO_DATA];
@@ -18,18 +18,11 @@ double minLatency=100000.00;
 double maxLatency=0;
 double avgLatency=0;
 int N_DATA = NO_DATA;
+pthread_barrier_t barrier;
 
-typedef struct pthread_barrier_t {
-  pthread_mutex_t mtx;
-  pthread_cond_t cv;
-  int valid;
-  int n_threads_required;
-  int n_threads_left;
-  int cycle; 
-} pthread_barrier_t;
+
 
 pthread_mutex_t lock;
-pthread_barrier_t barrier;
 
 /*******************************************************************************
  **  
@@ -56,6 +49,13 @@ buffer_t *createBuffer( int size)
   buf->size = size+1;
   buf->elems = (int *)malloc( (size+1)*sizeof(int));
 
+
+  if (pthread_mutex_init(&lock, NULL) != 0)
+    {
+        printf("\n mutex init failed\n");
+        exit(EXIT_FAILURE);
+    }
+
   return( buf);
 }
 
@@ -63,16 +63,16 @@ int pop( buffer_t* buf, int *data)
 {
   int res;
 
-  
+  pthread_mutex_lock(&lock);
   if(buf->head == buf->tail) {
       res = 0;  
   } else {
-    pthread_mutex_lock(&lock);
+    
     *data = buf->elems[buf->head];
     buf->head = (buf->head+1) % buf->size;
     res = 1;
   }
-
+pthread_mutex_unlock(&lock);
   return( res);
 }
 
@@ -81,7 +81,7 @@ int push( buffer_t* buf, int data)
 {
   int nextTail;
   int res;
-
+pthread_mutex_lock(&lock);
   nextTail = (buf->tail + 1) % buf->size;
   if(nextTail != buf->head)   { 
     buf->elems[buf->tail] = data;
@@ -211,12 +211,6 @@ void main(int argc, char *argv[])
   buffer_t *in, *inter1, *inter2, *out;
   double tput;
   int c;
-
-  if (pthread_mutex_init(&lock, NULL) != 0)
-    {
-        printf("\n mutex init failed\n");
-        return 1;
-    }
 
 
     c = pthread_barrier_init(&barrier, NULL,N_THREADS);

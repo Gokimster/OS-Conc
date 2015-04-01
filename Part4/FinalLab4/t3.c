@@ -52,16 +52,16 @@ int pop( buffer_t* buf, int *data)
 {
   int res;
 
-  
+   pthread_mutex_lock(&lock);
   if(buf->head == buf->tail) {
       res = 0;  
   } else {
-    pthread_mutex_lock(&lock);
+   
     *data = buf->elems[buf->head];
     buf->head = (buf->head+1) % buf->size;
     res = 1;
   }
-
+pthread_mutex_unlock(&lock);
   return( res);
 }
 
@@ -70,7 +70,7 @@ int push( buffer_t* buf, int data)
 {
   int nextTail;
   int res;
-
+ pthread_mutex_lock(&lock);
   nextTail = (buf->tail + 1) % buf->size;
   if(nextTail != buf->head)   { 
     buf->elems[buf->tail] = data;
@@ -275,4 +275,3 @@ void main(int argc, char *argv[])
 }
 
   
-
